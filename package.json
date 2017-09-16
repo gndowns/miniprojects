@@ -16,5 +16,7 @@
     "url": "https://github.com/gndowns/miniprojects/issues"
   },
   "homepage": "https://github.com/gndowns/miniprojects#readme",
-  "dependencies": {}
+  "dependencies": {
+    "bluetooth-serial-port": "^2.1.4"
+  }
 }
