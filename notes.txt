@@ -1,0 +1,4 @@
+NAME: BluetoothV3
+ADDR: 98d3:32:302360
+UART: 9600,1,0
+ROLE: 0 (Slave)
