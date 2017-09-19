@@ -2,7 +2,7 @@ import math
 import time
 import serial
 from inputs import get_gamepad
-arduino = serial.Serial('COM4', 115200, timeout=.1)
+arduino = serial.Serial('COM5', 115200, timeout=.1)
 time.sleep(.1) #give the connection a second to settle
 
 while 1:
@@ -17,7 +17,7 @@ while 1:
         if event.code == "ABS_Y":
 
             state = event.state
-
+            data = arduino.readline()#[:-2] #the last bit gets rid of the new-line chars
             #this is for limiting the sensativity of the joystick. if not included, joystick input is too sensative and will send too much information.
             #joystick can move between -5000 <= y <= 5000 and not send any data
             if state > 5000 or state < -5000:
@@ -29,20 +29,30 @@ while 1:
                     state = state - 5000
 
                 #the start to setting the max value at 255
-                state = math.floor(state / 109)
+                state = math.floor(state / 109.5)
                 #sets linear movement of the joystick to an exponential (x^3) increase in value. Used to create a more fluid movement for motor movement
                 state_pow = math.floor(math.pow(state,3))
                 state_powf = math.floor(state_pow/64263) #resetting it to max = 255
                 stateFinal = math.floor(state_powf)
-                stateFinalString = str(stateFinal) #stateFinal to string for encoding. must be string
-                stateFinalEncoded = bytes(stateFinalString,encoding="ascii") #encoded in bytes for the arduino transmission
+
                 #s = str(stateFinal).encode() #****ignore this****
                 #stateFinalBytes = bytes(stateFinal,"ascii") #****ignore this****
 
                 #sends data encoded in bytes to the arduino
-                arduino.write(stateFinalEncoded)
+                if stateFinal < 255 and stateFinal > -1:
+                    stateFinalString = str( + stateFinal) #stateFinal to string for encoding. must be string
+                    stateFinalEncoded = bytes(stateFinalString,encoding="ascii") #encoded in bytes for the arduino transmission
 
-                print('sending:', stateFinalEncoded)
+                    arduino.write(stateFinalEncoded)
+
+                    print('sending:', stateFinalEncoded)
+                    print(data)
+
             else:
                 #send the value of 0 when nothing is going on
+                print("sending: 0````")
                 arduino.write(b'0')
+        #while True:
+	     #      data = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
+	           #if data:
+		                 #print(data)
