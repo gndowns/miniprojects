@@ -2,7 +2,13 @@ import math
 import time
 import serial
 from inputs import get_gamepad
+
+# Windows
 arduino = serial.Serial('COM5', 115200, timeout=.1)
+
+# Linux
+#  arduino = serial.Serial('COM5', 115200, timeout=.1)
+
 time.sleep(.1) #give the connection a second to settle
 
 while 1:
