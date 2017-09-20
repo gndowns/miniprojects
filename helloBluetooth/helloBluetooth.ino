@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial btSerial(10, 11); //RX, TX
+SoftwareSerial btSerial(11, 12); //RX, TX
 
 char data;
 
