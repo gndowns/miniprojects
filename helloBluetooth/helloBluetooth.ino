@@ -9,13 +9,14 @@ void setup() {
   Serial.begin(9600);
   while (!Serial);
 
-  btSerial.begin(9600);
+  btSerial.begin(115200);
   btSerial.println("Hello from arduino!");
 }
 
 void loop() {
   if (btSerial.available()) {
     data = btSerial.read();
+    Serial.println(data);
   }
   if (data == '1') {
     digitalWrite(LED_BUILTIN, HIGH);
