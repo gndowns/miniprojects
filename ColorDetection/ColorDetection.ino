@@ -5,8 +5,7 @@ DFRobot_TCS34725 tcs =
   DFRobot_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
 // global color values, initialized during calibration
-int YELLOW_MIN = 20000;
-int WHITE_MIN = 20000;
+int WHITE_MIN_CLEAR = 0;
 
 uint16_t clr, red, green, blue;
 
@@ -31,7 +30,7 @@ void setup() {
 
   char* COLORS[] = {"WHITE", "RED", "GREEN", "YELLOW", "BLUE"};
 
-  WHITE_MIN = get_clear_min("WHITE", WHITE_MIN);
+  WHITE_MIN_CLEAR = get_clear_min("WHITE", WHITE_MIN_CLEAR);
 }
 
 String currentColor = "WHITE";
@@ -48,7 +47,7 @@ void loop() {
     minClear = clr < minClear ? clr : minClear;
   }
 
-  if (minClear > WHITE_MIN) {
+  if (minClear > WHITE_MIN_CLEAR) {
     newColor = "WHITE";
   }
   else {
@@ -67,7 +66,7 @@ void loop() {
 
 
 // UTILS
-int get_clear_min(String color, int colorMin) {
+int get_clear_min(String color, int minClear) {
   Serial.println("Calibrating " + color);
   Serial.print("Place Sensor over said color. ");
   Serial.println("Calibration will begin in 5 seconds");
@@ -82,12 +81,12 @@ int get_clear_min(String color, int colorMin) {
   t = millis();
   while (millis() < t + 5000) {
     tcs.getRGBC( &red, &green, &blue, &clr);
-    if (clr < colorMin) {
-      colorMin = clr;
+    if (clr < minClear) {
+      minClear = clr;
     }
   }
   Serial.println("Done.");
-  Serial.print("Found new minimum: "); Serial.println(colorMin);
+  Serial.print("Found new minimum: "); Serial.println(minClear);
   Serial.println();
-  return colorMin;
+  return minClear;
 }
