@@ -28,8 +28,6 @@ void setup() {
   // calibrate
   Serial.println();
 
-  char* COLORS[] = {"WHITE", "RED", "GREEN", "YELLOW", "BLUE"};
-
   WHITE_MIN_CLEAR = get_clear_min("WHITE", WHITE_MIN_CLEAR);
 }
 
