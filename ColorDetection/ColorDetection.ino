@@ -47,12 +47,7 @@ void loop() {
     minClear = !minClear ? clr : min(clr, minClear);
   }
 
-  if (minClear > WHITE_MIN_CLEAR) {
-    newColor = "WHITE";
-  }
-  else {
-    newColor = "RED";
-  }
+  newColor = minClear > WHITE_MIN_CLEAR ? "WHITE" : "RED";
 
   if (! currentColor.equals(newColor)) {
     Serial.println(newColor);
