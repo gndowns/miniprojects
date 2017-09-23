@@ -39,12 +39,12 @@ void loop() {
   digitalWrite(LED_BUILTIN, HIGH);
 
   // get the highest color
-  int minClear = 20000;
+  int minClear = 0;
   unsigned long int currentTime = millis();
   while (millis() < currentTime + 50) {
     tcs.getRGBC(&red, &green, &blue, &clr);
     tcs.lock();
-    minClear = clr < minClear ? clr : minClear;
+    minClear = !minClear ? clr : min(clr, minClear);
   }
 
   if (minClear > WHITE_MIN_CLEAR) {
@@ -81,9 +81,7 @@ int get_clear_min(String color, int minClear) {
   t = millis();
   while (millis() < t + 5000) {
     tcs.getRGBC( &red, &green, &blue, &clr);
-    if (clr < minClear) {
-      minClear = clr;
-    }
+    minClear = !minClear ? clr : min(clr, minClear);
   }
   Serial.println("Done.");
   Serial.print("Found new minimum: "); Serial.println(minClear);
