@@ -1,0 +1,41 @@
+Color Sensor Calibration
+Found Sensor
+
+Calibrating WHITE
+Place the Sensor over said color. you have 5 seconds
+C: 1895
+R: 489
+G: 642
+B: 751
+
+Calibrating RED
+Place the Sensor over said color. you have 5 seconds
+C: 1357
+R: 501
+G: 387
+B: 465
+
+Calibrating GREEN
+Place the Sensor over said color. you have 5 seconds
+C: 1381
+R: 265
+G: 555
+B: 543
+
+Calibrating YELLOW
+Place the Sensor over said color. you have 5 seconds
+C: 3371
+R: 1155
+G: 1338
+B: 825
+
+Calibrating BLUE
+Place the Sensor over said color. you have 5 seconds
+C: 1302
+R: 238
+G: 404
+B: 638
+
+Calibration complete ~
+
+==================================================================
