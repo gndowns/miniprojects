@@ -7,11 +7,13 @@
 #define MOT_B1_PIN 9
 #define MOT_B2_PIN 10
 #include <SoftwareSerial.h>
-
+#include <Servo.h>
+#define servoPin 3
+Servo servo;
 SoftwareSerial btSerial(11, 12); //RX, TX
 //SoftwareSerial btSerial(5,6); //RX, TX
 
-
+bool flag = true;
 
 // ================================================================================
 void setup()
@@ -23,6 +25,7 @@ void setup()
   pinMode(MOT_A2_PIN, OUTPUT);
   pinMode(MOT_B1_PIN, OUTPUT);
   pinMode(MOT_B2_PIN, OUTPUT);
+  servo.attach(servoPin);
 
   // Start with drivers off, motors coasting.
   digitalWrite(MOT_A1_PIN, LOW);
@@ -32,8 +35,10 @@ void setup()
 
   // Initialize the serial
    Serial.begin(115200);
+   while (!Serial);
    //bluetooth serial
    btSerial.begin(115200);
+   btSerial.print("hello");
 }
 
 // ================================================================================
@@ -60,8 +65,9 @@ void set_motor_currents(int pwm_A, int pwm_B)
 // ================================================================================
 void loop()
 {
- 
+ //set_motor_pwm(100, MOT_B1_PIN, MOT_B2_PIN);
  //digitalWrite(11, LOW);
+ 
   if(btSerial.available() > 0){
     
     String data = "";
@@ -81,22 +87,48 @@ void loop()
        
      // spin_and_wait(data2, data2, 0);
       
-     btSerial.flush();
+      
     }
-   
-    int data2 = data.toInt();
-    if((data2 < 200)&& (data2 > -1 )){
+
+    
+    String subDataFront = data.substring(0,1);
+    String subDataBack = data.substring(1);
+    int data2 = subDataBack.toInt();
+    if((data2 < 256)&& (data2 > -256 )){
 
 //       analogWrite(5, data2);
-       analogWrite(9, data2);
-     // set_motor_pwm(data2, MOT_B1_PIN, MOT_B2_PIN);
+       //analogWrite(9, data2);
+      if(subDataFront == "R"){
+        set_motor_pwm(data2, MOT_B1_PIN, MOT_B2_PIN);
+      }
+      if(subDataFront == "L"){
+        set_motor_pwm(data2, MOT_A1_PIN, MOT_A2_PIN);
+      }
+      if(subDataFront == "B"){
+        if(flag == true){
+          servo.write(180);
+        //  analogWrite(servoPin, 255);
+          flag = false;
+        }else if(flag == false){
+         // analogWrite(servoPin, 0);
+          servo.write(0);
+          flag = true;
+        }
+        
+      }
+     
+      
      // set_motor_pwm(data2, MOT_A1_PIN, MOT_A2_PIN);
       //set_motor_currents(data2, data2);
-      btSerial.print('9');
+      Serial.print(subDataFront + " ON ");
+      Serial.print(data2);
+      btSerial.print(subDataFront + " ON ");
+      btSerial.print(data2);
+      
       btSerial.flush();
     }
     
-    
+    btSerial.flush();
   }
 }
 /****************************************************************/
