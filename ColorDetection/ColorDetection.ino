@@ -11,6 +11,9 @@ int WHITE_MIN = 20000;
 uint16_t clr, red, green, blue;
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+
   Serial.begin(9600);
   Serial.println("Calibrating Color Sensor");
 
@@ -34,10 +37,12 @@ void setup() {
 String currentColor = "WHITE";
 String newColor;
 void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+
   // get the highest color
   int minClear = 20000;
-  int currentTime = millis();
-  while (millis() < currentTime + 5) {
+  unsigned long int currentTime = millis();
+  while (millis() < currentTime + 50) {
     tcs.getRGBC(&red, &green, &blue, &clr);
     tcs.lock();
     minClear = clr < minClear ? clr : minClear;
@@ -54,6 +59,8 @@ void loop() {
     Serial.println(newColor);
     currentColor = newColor;
   }
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
 }
 
 
