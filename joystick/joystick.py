@@ -2,13 +2,7 @@ import math
 import time
 import serial
 from inputs import get_gamepad
-
-# Windows
-#  arduino = serial.Serial('COM5', 115200, timeout=.1)
-
-# Linux
-arduino = serial.Serial('/dev/rfcomm0', 115200, timeout=.1)
-
+arduino = serial.Serial('COM6', 115200, timeout=.1)
 time.sleep(.1) #give the connection a second to settle
 
 while 1:
@@ -39,24 +33,27 @@ while 1:
                 #sets linear movement of the joystick to an exponential (x^3) increase in value. Used to create a more fluid movement for motor movement
                 state_pow = math.floor(math.pow(state,3))
                 state_powf = math.floor(state_pow/64263) #resetting it to max = 255
-                stateFinal = math.floor(state_powf)
+                #stateFinal = math.floor(state_powf)
+                stateFinal = state
 
                 #s = str(stateFinal).encode() #****ignore this****
                 #stateFinalBytes = bytes(stateFinal,"ascii") #****ignore this****
 
                 #sends data encoded in bytes to the arduino
-                if stateFinal < 255 and stateFinal > -1:
+                if stateFinal <= 255 and stateFinal >= -255:
                     stateFinalString = str( + stateFinal) #stateFinal to string for encoding. must be string
                     stateFinalEncoded = bytes(stateFinalString,encoding="ascii") #encoded in bytes for the arduino transmission
 
                     arduino.write(stateFinalEncoded)
+                    #arduino.write(stateFinalEncoded)
+                    #arduino.write(b'1')
 
                     print('sending:', stateFinalEncoded)
-                    print(data)
+                    print("\treceived:",data)
 
             else:
                 #send the value of 0 when nothing is going on
-                print("sending: 0````")
+                print("sending~~: 0")
                 arduino.write(b'0')
         #while True:
 	     #      data = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
