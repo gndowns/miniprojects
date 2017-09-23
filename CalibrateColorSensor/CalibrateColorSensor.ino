@@ -15,19 +15,16 @@ void setup() {
     Serial.println("No sensor found :(");
     while (1);
   }
-}
 
-void loop() {
+  // calibrate
   Serial.println();
   
   uint16_t clear, red, green, blue;
-  tcs.getRGBC(&red, &green, &blue, &clear);
-  tcs.lock(); // turn off sensor LED
 
-  char* COLORS[] = {"WHITE", "GREEN", "YELLOW", "BLUE", "BLACK"};
+  char* COLORS[] = {"WHITE", "RED", "GREEN", "YELLOW", "BLUE"};
 
-  for (int i=0; i < 4; i++) {
-    Serial.print("Callibrating "); Serial.println(COLORS[i]);
+  for (int i=0; i < 5; i++) {
+    Serial.print("Calibrating "); Serial.println(COLORS[i]);
     Serial.println("Place the Sensor over said color. you have 5 seconds");
     delay(5000);
 
@@ -41,4 +38,9 @@ void loop() {
 
     Serial.println();
   }
+  Serial.println("Calibration complete ~");
+}
+
+void loop() {
+
 }
