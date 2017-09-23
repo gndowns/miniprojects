@@ -5,8 +5,8 @@ DFRobot_TCS34725 tcs =
   DFRobot_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
 // global color values, initialized during calibration
-int WHITE_MIN = 5000;
-int YELLOW_MIN = 5000;
+int YELLOW_MIN = 20000;
+int WHITE_MIN = 20000;
 
 uint16_t clr, red, green, blue;
 
@@ -29,9 +29,37 @@ void setup() {
   char* COLORS[] = {"WHITE", "RED", "GREEN", "YELLOW", "BLUE"};
 
   WHITE_MIN = get_clear_min("WHITE", WHITE_MIN);
-  YELLOW_MIN = get_clear_min("YELLOW", YELLOW_MIN);
 }
 
+String currentColor = "WHITE";
+String newColor;
+void loop() {
+  // get the highest color
+  int minClear = 20000;
+  int currentTime = millis();
+  while (millis() < currentTime + 5) {
+    tcs.getRGBC(&red, &green, &blue, &clr);
+    tcs.lock();
+    minClear = clr < minClear ? clr : minClear;
+  }
+
+  if (minClear > WHITE_MIN) {
+    newColor = "WHITE";
+  }
+  else {
+    newColor = "RED";
+  }
+
+  if (! currentColor.equals(newColor)) {
+    Serial.println(newColor);
+    currentColor = newColor;
+  }
+}
+
+
+
+
+// UTILS
 int get_clear_min(String color, int colorMin) {
   Serial.println("Calibrating " + color);
   Serial.print("Place Sensor over said color. ");
@@ -46,7 +74,7 @@ int get_clear_min(String color, int colorMin) {
   // find the lower bound of clear value
   t = millis();
   while (millis() < t + 5000) {
-    tcs.getRGBC(&red, &green, &blue, &clr);
+    tcs.getRGBC( &red, &green, &blue, &clr);
     if (clr < colorMin) {
       colorMin = clr;
     }
@@ -55,14 +83,4 @@ int get_clear_min(String color, int colorMin) {
   Serial.print("Found new minimum: "); Serial.println(colorMin);
   Serial.println();
   return colorMin;
-}
-
-void loop() {
-  // check if color changes from white to yellow
-  tcs.getRGBC(&red, &green, &blue, &clr);
-  if (clr > (YELLOW_MIN - 100)) {
-    Serial.println("YELLOW!");
-    Serial.println(clr);
-  }
-  delay(100);
 }
