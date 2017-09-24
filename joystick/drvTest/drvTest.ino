@@ -26,6 +26,7 @@ void setup()
   pinMode(MOT_B1_PIN, OUTPUT);
   pinMode(MOT_B2_PIN, OUTPUT);
   servo.attach(servoPin);
+  servo.write(5);
 
   // Start with drivers off, motors coasting.
   digitalWrite(MOT_A1_PIN, LOW);
@@ -45,6 +46,7 @@ void setup()
 /// Set the current on a motor controller
 void set_motor_pwm(int pwm, int IN1_PIN, int IN2_PIN)
 {
+
   if (pwm < 0) {  // reverse speeds
     analogWrite(IN1_PIN, -pwm);
     digitalWrite(IN2_PIN, LOW);
@@ -67,7 +69,6 @@ void loop()
 {
  //set_motor_pwm(100, MOT_B1_PIN, MOT_B2_PIN);
  //digitalWrite(11, LOW);
- 
   if(btSerial.available() > 0){
     
     String data = "";
@@ -101,17 +102,17 @@ void loop()
       if(subDataFront == "R"){
         set_motor_pwm(data2, MOT_B1_PIN, MOT_B2_PIN);
       }
-      if(subDataFront == "L"){
+      else if(subDataFront == "L"){
         set_motor_pwm(data2, MOT_A1_PIN, MOT_A2_PIN);
       }
-      if(subDataFront == "B"){
+      else if(subDataFront == "B"){
         if(flag == true){
-          servo.write(180);
+          servo.write(35);
         //  analogWrite(servoPin, 255);
           flag = false;
         }else if(flag == false){
          // analogWrite(servoPin, 0);
-          servo.write(0);
+          servo.write(5);
           flag = true;
         }
         
