@@ -1,5 +1,9 @@
 // Central Arduino On Robot
 
+// Time up LED 
+#define TIME_LED_PIN 13
+unsigned long duration = 60000;
+
 // DC Motors
 #define MOT_A1_PIN 5
 #define MOT_A2_PIN 6
@@ -38,6 +42,9 @@ void setup() {
   // bluetooth serial
   btSerial.begin(115200);
   btSerial.print("hello from chad 1");
+
+  //Timer LED
+  pinMode(TIME_LED_PIN , OUTPUT);
 }
 
 void loop() {
@@ -79,6 +86,9 @@ void loop() {
     }
     // flush?
     btSerial.flush();
+  }
+  if(millis() > duration){
+    digitalWrite(TIME_LED_PIN, HIGH);
   }
 }
 
