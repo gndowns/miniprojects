@@ -28,7 +28,7 @@ void setup() {
   // calibrate
   Serial.println();
 
-  WHITE_MIN_CLEAR = get_clear_min("WHITE", WHITE_MIN_CLEAR);
+  WHITE_MIN_CLEAR = get_color_min("WHITE", WHITE_MIN_CLEAR);
 }
 
 String currentColor = "WHITE";
@@ -59,7 +59,7 @@ void loop() {
 
 
 // UTILS
-int get_clear_min(String color, int minClear) {
+int get_color_min(String color, int minClear) {
   Serial.println("Calibrating " + color);
   Serial.print("Place Sensor over said color. ");
   Serial.println("Calibration will begin in 5 seconds");
