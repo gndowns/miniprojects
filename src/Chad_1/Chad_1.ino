@@ -6,6 +6,9 @@
 #define MOT_B1_PIN 9
 #define MOT_B2_PIN 10
 
+// sends signal to Chad_2 to control servo
+#define Chad_2_servo 3
+
 // Bluetooth Serial
 #include <SoftwareSerial.h>
 SoftwareSerial btSerial(11, 12); // RX, TX
@@ -17,11 +20,17 @@ void setup() {
   pinMode(MOT_B1_PIN, OUTPUT);
   pinMode(MOT_B2_PIN, OUTPUT);
 
+  // signal to Chad 2
+  pinMode(Chad_2_servo, OUTPUT);
+
   // init with drivers off, motors coasting
   digitalWrite(MOT_A1_PIN, LOW);
   digitalWrite(MOT_A2_PIN, LOW);
   digitalWrite(MOT_B1_PIN, LOW);
   digitalWrite(MOT_B2_PIN, LOW);
+
+  // init servo off
+  digitalWrite(Chad_2_servo, LOW);
 
   // init serial
   Serial.begin(115200);
@@ -51,6 +60,12 @@ void loop() {
       }
       else if (subDataFront == "L") {
         set_motor_pwm(data2, MOT_A1_PIN, MOT_A2_PIN);
+      }
+
+      // if button, send to Chad 2 to toggle servo
+      else if (subDataFront == "B") {
+        digitalWrite(Chad_2_servo, HIGH);
+        digitalWrite(Chad_2_servo, LOW);
       }
 
       // LOG
