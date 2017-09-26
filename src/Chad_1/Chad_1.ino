@@ -1,5 +1,13 @@
 // Central Arduino On Robot
 
+// keep track of the timing of recent interrupts
+unsigned long trigger_time = 0;  
+unsigned long last_trigger_time = 0; 
+
+// Time up LED 
+#define TIME_LED_PIN 13
+unsigned long duration = 120000;
+
 // DC Motors
 #define MOT_A1_PIN 5
 #define MOT_A2_PIN 6
@@ -38,6 +46,13 @@ void setup() {
   // bluetooth serial
   btSerial.begin(115200);
   btSerial.print("hello from chad 1");
+
+  //Timer LED
+  pinMode(TIME_LED_PIN , OUTPUT);
+
+  // 0 (pin 2) connected to output from rgb sensor
+  // jump to red function on falling edge
+  attachInterrupt(0, red, FALLING);
 }
 
 void loop() {
@@ -80,6 +95,9 @@ void loop() {
     // flush?
     btSerial.flush();
   }
+  if(millis() > duration){
+    digitalWrite(TIME_LED_PIN, HIGH);
+  }
 }
 
 // UTILS ==========================
@@ -93,5 +111,18 @@ void set_motor_pwm(int pwm, int IN1_PIN, int IN2_PIN) {
     analogWrite(IN1_PIN, -pwm);
     digitalWrite(IN2_PIN, LOW);
   }
+}
+
+void red(){
+  trigger_time = millis();  
+  if (trigger_time - last_trigger_time > 1000){
+     digitalWrite(Chad_2_servo, HIGH);
+     digitalWrite(Chad_2_servo, LOW);
+    /*set_motor_pwm(0, MOT_B1_PIN, MOT_B2_PIN);
+    set_motor_pwm(0, MOT_A1_PIN, MOT_A2_PIN);
+    delay(250);
+    btSerial.flush();
+    last_trigger_time = trigger_time;*/
+  } 
 }
 
