@@ -115,12 +115,14 @@ void set_motor_pwm(int pwm, int IN1_PIN, int IN2_PIN) {
 
 void red(){
   trigger_time = millis();  
-  if (trigger_time - last_trigger_time > 500){
-    set_motor_pwm(0, MOT_B1_PIN, MOT_B2_PIN);
+  if (trigger_time - last_trigger_time > 1000){
+     digitalWrite(Chad_2_servo, HIGH);
+     digitalWrite(Chad_2_servo, LOW);
+    /*set_motor_pwm(0, MOT_B1_PIN, MOT_B2_PIN);
     set_motor_pwm(0, MOT_A1_PIN, MOT_A2_PIN);
     delay(250);
     btSerial.flush();
-    last_trigger_time = trigger_time;
+    last_trigger_time = trigger_time;*/
   } 
 }
 
