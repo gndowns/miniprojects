@@ -5,7 +5,7 @@ Meet CHAD
 
 ![CHAD](screenshots/side_with_controller.jpg)
 
-A differential drive drawing robot fully maneuverable with an Xbox Controller
+A differential drive drawing robot fully maneuverable with an Xbox Controller, built in a week!
 
 #
 ![driving](screenshots/driving.gif)
@@ -24,3 +24,9 @@ Chad_1 receives the inputs from the xbox controller joysticks and moves the whee
 
 # Usage
 Connect a USB Game Controller to your computer and run `./src/controller.py` to connect to CHAD over bluetooth and begin sending commands.
+#
+\
+Copyright 2017 Daniel Besson, Gabriel Downs, Julien Schmidt, Sara Tawil, Tim Wang
+
+This project is free software, licensed under the GNU GPL.\
+See included `LICENSE` file, or <http://www.gnu.org/licenses/> for more details
