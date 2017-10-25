@@ -3,9 +3,19 @@
 
 Meet CHAD
 
-![CHAD](screenshots/chad.png)
+![CHAD](screenshots/side_with_controller.jpg)
 
-A drawing robot fully maneuverable with an Xbox Controller
+A differential drive drawing robot fully maneuverable with an Xbox Controller
+
+#
+![driving](screenshots/driving.gif)
+#
+![robot_and_controller](screenshots/robot_and_controller.jpg)
+![rear](screenshots/rear.jpg)
+![side](screenshots/side.jpg)
+#
+![drawing](screenshots/drawing.gif)
+
 
 # The Code
 CHAD is controlled by two arduinos, the code for which can be found in src/Chad_1 and src/Chad_2 respectively.
